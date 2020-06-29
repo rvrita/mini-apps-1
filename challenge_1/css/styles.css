@@ -67,3 +67,16 @@ button {
   cursor: pointer;
   font-family: inherit;
 }
+
+#winner {
+  width: 200px;
+  height: 150px;
+  display: none;
+  position: absolute;
+  text-align: center;
+  top: 25%;
+  left: 38%;
+  background-color: lightsalmon;
+  border: 2px solid #000;
+  border-radius: 5px;
+}
