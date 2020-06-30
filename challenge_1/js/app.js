@@ -10,6 +10,11 @@ var moves = ['', '', '', '', '', '', '', '', ''];
 // players
 var p1 = document.getElementById('p1');
 var p2 = document.getElementById('p2');
+var wins = {
+  p1: 0,
+  p2: 0
+};
+var scores = document.getElementById('scores');
 
 // elements to reset the board
 var resetButton = document.getElementsByClassName('reset');
@@ -66,6 +71,11 @@ var setEndMessage = function(state) {
   }
 }
 
+var setWins = function(wins) {
+  scores.innerHTML = '';
+  scores.innerHTML = `${wins['p1']} | ${wins['p2']}`;
+}
+
 
 // Controller
 
@@ -75,6 +85,7 @@ var resetBoard = function () {
   drawBoard(moves);
   setActivePlayer('x');
   setEndMessage();
+  setWins(wins);
 }
 
 var handlePlayerClick = function (event) {
@@ -108,31 +119,24 @@ var checkWinner = function (moves) {
   (moves[2] !== '' && moves[2] === moves[5] && moves[2] === moves[8]) ||
   (moves[0] !== '' && moves[0] === moves[4] && moves[0] === moves[8]) ||
   (moves[2] !== '' && moves[2] === moves[4] && moves[2] === moves[6])) {
-    document.getElementById('winner').style.display = 'block';
+    setEndMessage('win');
+    if (currentPlayer === 'O') {
+      wins['p1']++;
+    } else if (currentPlayer === 'X') {
+      wins['p2']++;
+    }
   } else if (!moves.includes('')) {
-    document.getElementById('tie').style.display = 'block';
+    setEndMessage('tie');
   }
 }
 
-console.log(resetButton);
 for (var i = 0; i < resetButton.length; i++) {
   resetButton[i].addEventListener('click', resetBoard);
 }
-
 board.addEventListener('click', handlePlayerClick);
 
 // inital state of the game
 drawBoard(moves);
 setActivePlayer('x');
-
-
-// notes:
-// set bgr if winer cubes
-
-
-
-
-
-
-
+setWins(wins);
 
