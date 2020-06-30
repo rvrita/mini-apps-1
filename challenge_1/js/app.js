@@ -4,7 +4,9 @@ var board = document.getElementById('board');
 var p1 = document.getElementById('p1');
 var p2 = document.getElementById('p2');
 var reset = document.getElementById('reset');
-var playagain = document.getElementById('playagain');
+var playagainW = document.getElementById('w-playagain');
+var playagainT = document.getElementById('t-playagain');
+var table = document.getElementById('table');
 var currentPlayer = 'X';
 var moves = ['', '', '', '', '', '', '', '', ''];
 
@@ -12,7 +14,6 @@ var moves = ['', '', '', '', '', '', '', '', ''];
 
 var template = function (moves) {
   return `
-<table>
   <tr>
     <td data-index="0">${moves[0]}</td>
     <td data-index="1">${moves[1]}</td>
@@ -28,7 +29,6 @@ var template = function (moves) {
     <td data-index="7">${moves[7]}</td>
     <td data-index="8">${moves[8]}</td>
   </tr>
-</table>
 `
 };
 
@@ -37,7 +37,7 @@ var template = function (moves) {
 
 // init
 var drawBoard = function (moves) {
-  board.innerHTML = template(moves);
+  table.innerHTML = template(moves);
 }
 drawBoard(moves);
 p1.setAttribute('style', 'text-decoration: underline');
@@ -45,9 +45,12 @@ p1.setAttribute('style', 'text-decoration: underline');
 
 // clickHandlers
 var resetBoard = function () {
-  var moves = ['', '', '', '', '', '', '', '', ''];
+  moves = ['', '', '', '', '', '', '', '', ''];
   drawBoard(moves);
+  p1.setAttribute('style', 'text-decoration: underline');
+  p2.setAttribute('style', 'text-decoration: none');
   document.getElementById('winner').style.display = 'none';
+  document.getElementById('tie').style.display = 'none';
 }
 
 var handlePlayerClick = function (event) {
@@ -93,16 +96,20 @@ var checkWinner = function (moves) {
   (moves[0] !== '' && moves[0] === moves[4] && moves[0] === moves[8]) ||
   (moves[2] !== '' && moves[2] === moves[4] && moves[2] === moves[6])) {
     document.getElementById('winner').style.display = 'block';
+  } else if (!moves.includes('')) {
+    document.getElementById('tie').style.display = 'block';
   }
 }
 
 reset.addEventListener('click', resetBoard);
-playagain.addEventListener('click', resetBoard);
+playagainW.addEventListener('click', resetBoard);
+playagainT.addEventListener('click', resetBoard);
 board.addEventListener('click', handlePlayerClick);
 
 
 // notes:
-// draw moves, restart not working
+// set bgr if winer cubes
+// refactor
 
 
 

@@ -68,7 +68,8 @@ button {
   font-family: inherit;
 }
 
-#winner {
+#winner,
+#tie {
   width: 200px;
   height: 150px;
   display: none;
