@@ -1,18 +1,23 @@
 // Model
 
+// attach the event handler to the board so when the table resets
+// the event handler will still be there
 var board = document.getElementById('board');
+var table = document.getElementById('table');
+// start with empty board
+var moves = ['', '', '', '', '', '', '', '', ''];
+
+// players
 var p1 = document.getElementById('p1');
 var p2 = document.getElementById('p2');
-var reset = document.getElementById('reset');
-var playagainW = document.getElementById('w-playagain');
-var playagainT = document.getElementById('t-playagain');
-var table = document.getElementById('table');
-var currentPlayer = 'X';
-var moves = ['', '', '', '', '', '', '', '', ''];
+
+// elements to reset the board
+var resetButton = document.getElementsByClassName('reset');
+
 
 // View
 
-var template = function (moves) {
+var template = function(moves) {
   return `
   <tr>
     <td data-index="0">${moves[0]}</td>
@@ -32,54 +37,62 @@ var template = function (moves) {
 `
 };
 
-
-// Controller
-
-// init
-var drawBoard = function (moves) {
+var drawBoard = function(moves) {
   table.innerHTML = template(moves);
 }
-drawBoard(moves);
-p1.setAttribute('style', 'text-decoration: underline');
 
+var setActivePlayer = function(player) {
+  if (player === 'x') {
+    p1.style.textDecoration = "underline";
+    p2.style.textDecoration = "none";
+    currentPlayer = 'X';
+  } else {
+    p2.style.textDecoration = "underline";
+    p1.style.textDecoration = "none";
+    currentPlayer = 'O';
+  }
+}
+
+var setEndMessage = function(state) {
+  var winnerMessage = document.getElementById('winner');
+  var tieMessage = document.getElementById('tie');
+  if (state === 'win') {
+    winnerMessage.style.display = 'block';
+  } else if (state === 'tie') {
+    tieMessage.style.display = 'block';
+  } else {
+    winnerMessage.style.display = 'none';
+    tieMessage.style.display = 'none';
+  }
+}
+
+
+// Controller
 
 // clickHandlers
 var resetBoard = function () {
   moves = ['', '', '', '', '', '', '', '', ''];
   drawBoard(moves);
-  p1.setAttribute('style', 'text-decoration: underline');
-  p2.setAttribute('style', 'text-decoration: none');
-  document.getElementById('winner').style.display = 'none';
-  document.getElementById('tie').style.display = 'none';
+  setActivePlayer('x');
+  setEndMessage();
 }
 
 var handlePlayerClick = function (event) {
   // get clicked element and get the index that needs to be updated in moves
   var el = event.target;
   var clickedIndex = el.dataset.index;
-  // get active player id
-  if (currentPlayer === 'X') {
-    playerSymbol = 'X';
-  } else {
-    playerSymbol = 'O';
-  }
 
-  // update moves, if user clicked on occupied field do nothing
+  // update moves only if empty space, if clicked on occupied field do nothing
   if (moves[clickedIndex] === '') {
-    moves[clickedIndex] = `${playerSymbol}`;
+    moves[clickedIndex] = `${currentPlayer}`;
     // redraw board
     drawBoard(moves);
     // set it to the other player
     if (currentPlayer === 'X') {
-      currentPlayer = 'O';
-      p1.setAttribute('style', 'text-decoration: none');
-      p2.setAttribute('style', 'text-decoration: underline');
+      setActivePlayer('o');
     } else {
-      currentPlayer = 'X';
-      p1.setAttribute('style', 'text-decoration: underline');
-      p2.setAttribute('style', 'text-decoration: none');
+      setActivePlayer('x');
     }
-
     // check if any winner
     checkWinner(moves);
   }
@@ -101,15 +114,20 @@ var checkWinner = function (moves) {
   }
 }
 
-reset.addEventListener('click', resetBoard);
-playagainW.addEventListener('click', resetBoard);
-playagainT.addEventListener('click', resetBoard);
+console.log(resetButton);
+for (var i = 0; i < resetButton.length; i++) {
+  resetButton[i].addEventListener('click', resetBoard);
+}
+
 board.addEventListener('click', handlePlayerClick);
+
+// inital state of the game
+drawBoard(moves);
+setActivePlayer('x');
 
 
 // notes:
 // set bgr if winer cubes
-// refactor
 
 
 
