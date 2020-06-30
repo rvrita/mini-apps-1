@@ -1,0 +1,36 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+  color: #3d3a3a;
+}
+
+
+#main-container {
+  width: 800px;
+  margin: 0 auto;
+  background-color: navajowhite;
+  padding: 20px 0 50px;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+
+textarea {
+  outline-color: #3d3a3a;
+  border-radius: 5px;
+}
+
+#submit {
+  cursor: pointer;
+  background-color: #fff;
+  padding: 10px 12px;
+  border: 1px solid #3d3a3a;
+  border-radius: 5px;
+}
+
+#form-result {
+  margin-top: 50px;
+}
