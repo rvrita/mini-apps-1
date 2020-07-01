@@ -6,7 +6,7 @@ body {
 
 
 #main-container {
-  width: 800px;
+  width: 900px;
   margin: 0 auto;
   background-color: navajowhite;
   padding: 20px 0 50px;
@@ -29,6 +29,7 @@ textarea {
   padding: 10px 12px;
   border: 1px solid #3d3a3a;
   border-radius: 5px;
+  font-size: 18px;;
 }
 
 #form-result {
