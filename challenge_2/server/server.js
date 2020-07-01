@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+// make sure it's safe to send text, escaped for html
 
-app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded()); // for parsing application/x-www-form-urlencoded
 
 // serving an index file from the server using .static,
@@ -11,16 +11,19 @@ app.use(express.static('../client'));
 
 // for get we go to static, for post we do this:
 app.post('/', (req, res) => {
-  var json = JSON.stringify(req.body);
-  var data = template(json, json);
+  var toJson = JSON.parse(req.body.json);
+  var jsonToString = JSON.stringify(toJson, null, 4);
+  // we need 2 formats - original and new
+  var newFormat = csvConverter(toJson);
+  // adding both type of data to template and sending it back to the client
+  var data = template(jsonToString, newFormat);
   res.send(data);
 });
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 
-
 // html to send back
-var template = function(oldFormat, newFormat) {
+var template = function (oldFormat, newFormat) {
   return `
 <!DOCTYPE html><html>
 <head>
@@ -46,7 +49,7 @@ var template = function(oldFormat, newFormat) {
 <p id="form-result">
 <h2>Your CSV:</h2>
 <label for="result"></label>
-<textarea id="result" name="result" rows="20" cols="80">${newFormat}</textarea>
+<textarea id="result" name="result" rows="10" cols="80">${newFormat}</textarea>
 </p>
 </div>
 </div>
@@ -54,3 +57,39 @@ var template = function(oldFormat, newFormat) {
 </body>
 </html>
 `};
+
+// Functions to modify the JSON
+var getFirstLine = function (data) {
+  var firstLine = '';
+  // adding keys in the first line of the file
+  var keysArray = Object.keys(data);
+  for (var i = 0; i < keysArray.length; i++) {
+    firstLine += keysArray[i] + ',';
+  }
+  firstLine = firstLine.replace(',children,', '\n');
+  return firstLine;
+}
+
+var csvConverter = function (data) {
+  var result = '';
+  // get keys for first line
+  result += getFirstLine(data);
+
+  var getValues = function (data) {
+    var values = '';
+    for (var [key, value] of Object.entries(data)) {
+      if (key !== 'children') {
+        values += `${value},`;
+      } else {
+        for (var i = 0; i < value.length; i++) {
+          getValues(value[i]);
+        }
+      }
+    }
+    var lastComma = values.lastIndexOf(',');
+    result += values.substring(0, lastComma) + '\n';
+  }
+
+  getValues(data);
+  return result;
+};
