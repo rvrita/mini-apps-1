@@ -38,3 +38,7 @@ $('form').on('submit', function(e) {
   var file = input.files[0];
   fileUpload(file);
 });
+
+$('download').on('click', function(e) {
+
+});

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-var fs = require('fs');
+var newFormat = {};
 // make sure it's safe to send text, escaped for html
 
 // app.use(express.urlencoded()); // for parsing application/x-www-form-urlencoded
@@ -15,6 +15,13 @@ app.post('/', (req, res) => {
   // handleText(req, res); // Part 1
   // handleUpload(req, res); // Part 2
   handleAjaxUpload(req, res); // Part 3
+});
+
+app.get('/file.csv', (req, res) => {
+  res.set('Content-Type', 'text/csv');
+  // need to tell browser to save the file
+  res.set('Content-Disposition', 'attachment; filename="file.csv"');
+  res.send(newFormat);
 });
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
@@ -118,8 +125,7 @@ var handleUpload = function (req, res) {
     data = data.split('------')[0].trim();
     // for converter we need JSON
     var toJson = JSON.parse(data);
-    var newFormat = csvConverter(toJson);
-
+    newFormat = csvConverter(toJson);
     var updatedPage = template(data, newFormat);
     res.send(updatedPage);
   });
@@ -138,7 +144,7 @@ var handleAjaxUpload = function (req, res) {
     data = data.split('------')[0].trim();
     // for converter we need JSON
     var toJson = JSON.parse(data);
-    var newFormat = csvConverter(toJson);
+    newFormat = csvConverter(toJson);
     var allData = {
       old: data,
       new: newFormat
