@@ -12,8 +12,9 @@ app.use(express.static('../client'));
 
 // for get we go to static, for post we do this:
 app.post('/', (req, res) => {
-  // handleText(req, res);
-  handleUpload(req, res);
+  // handleText(req, res); // Part 1
+  // handleUpload(req, res); // Part 2
+  handleAjaxUpload(req, res); // Part 3
 });
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
@@ -37,6 +38,10 @@ var template = function (oldFormat, newFormat) {
 <p>
 <label for="paste-json"></label>
 <textarea id="paste-json" name="json" rows="20" cols="80">${oldFormat}</textarea>
+</p>
+<p>
+<label for="json-file">Choose a json file:</label>
+<input type="file" id="json-file" name="json-file" accept=".json"><br/>
 </p>
 <input type="submit" id="submit">
 </form>
@@ -118,5 +123,26 @@ var handleUpload = function (req, res) {
     var updatedPage = template(data, newFormat);
     res.send(updatedPage);
   });
+}
 
+// Part 3
+var handleAjaxUpload = function (req, res) {
+  var buffer = Buffer.alloc(0);
+  req.on('data', (chunk) => {
+    buffer = Buffer.concat([buffer, chunk]);
+  }).on('end', () => {
+    // binary -> string to get the data back
+    var data = buffer.toString('utf8');
+    // keeping only the json part
+    data = data.split('application/json')[1];
+    data = data.split('------')[0].trim();
+    // for converter we need JSON
+    var toJson = JSON.parse(data);
+    var newFormat = csvConverter(toJson);
+    var allData = {
+      old: data,
+      new: newFormat
+    };
+    res.send(allData);
+  });
 }
