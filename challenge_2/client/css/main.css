@@ -31,8 +31,18 @@ textarea {
   padding: 10px 12px;
   border: 1px solid #3d3a3a;
   border-radius: 5px;
-  font-size: 18px;;
+  font-size: 18px;
 }
+
+input#json-file {
+  cursor: pointer;
+  padding: 10px 12px;
+  /* background-color: #fff; */
+  /* border: 1px solid #3d3a3a; */
+  border-radius: 5px;
+  /* font-size: 18px; */
+}
+
 
 #form-result {
   margin-top: 50px;

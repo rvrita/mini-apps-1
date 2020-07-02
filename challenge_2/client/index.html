@@ -13,10 +13,35 @@
     <h1>JSON to CSV</h1>
     <div id="form-container">
       <h2>Paste your JSON here:</h2>
-      <form id="form" action="/" method="post">
+      <form id="form" action="/" method="post" enctype="multipart/form-data">
         <p>
           <label for="paste-json"></label>
-          <textarea id="paste-json" name="json" rows="20" cols="80">{
+          <textarea id="paste-json" name="json" rows="20" cols="80"></textarea>
+        </p>
+        <p>
+          <label for="json-file">Choose a json file:</label>
+          <input type="file" id="json-file" name="json-file" accept=".json"><br/>
+
+        </p>
+        <input type="submit" id="submit">
+      </form>
+    </div>
+    <div>
+      <p id="form-result">
+      <h2>Your CSV:</h2>
+      <label for="result"></label>
+      <textarea id="result" name="result" rows="10" cols="80"></textarea>
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
+
+
+<!-- {
             "firstName": "Joshie",
             "lastName": "Wyattson",
             "county": "San Mateo",
@@ -62,21 +87,4 @@
               "children": []
             }
           ]
-        }</textarea>
-        </p>
-        <input type="submit" id="submit">
-      </form>
-    </div>
-    <div>
-      <p id="form-result">
-        <h2>Your CSV:</h2>
-        <label for="result"></label>
-        <textarea id="result" name="result" rows="10" cols="80"></textarea>
-      </p>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-
-</html>
+        } -->

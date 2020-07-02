@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+var fs = require('fs');
 // make sure it's safe to send text, escaped for html
 
-app.use(express.urlencoded()); // for parsing application/x-www-form-urlencoded
+// app.use(express.urlencoded()); // for parsing application/x-www-form-urlencoded
 
 // serving an index file from the server using .static,
 // filepath is relative to the server.js
@@ -11,13 +12,8 @@ app.use(express.static('../client'));
 
 // for get we go to static, for post we do this:
 app.post('/', (req, res) => {
-  var toJson = JSON.parse(req.body.json);
-  var jsonToString = JSON.stringify(toJson, null, 4);
-  // we need 2 formats - original and new
-  var newFormat = csvConverter(toJson);
-  // adding both type of data to template and sending it back to the client
-  var data = template(jsonToString, newFormat);
-  res.send(data);
+  // handleText(req, res);
+  handleUpload(req, res);
 });
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
@@ -58,7 +54,17 @@ var template = function (oldFormat, newFormat) {
 </html>
 `};
 
-// Functions to modify the JSON
+// Functions to modify the JSON - Part 1
+
+var handleText = function (req, res) {
+  var toJson = JSON.parse(req.body.json);
+  var jsonToString = JSON.stringify(toJson, null, 4);
+  var newFormat = csvConverter(toJson);
+  var data = template(jsonToString, newFormat);
+  res.send(data);
+}
+
+
 var getFirstLine = function (data) {
   var firstLine = '';
   // adding keys in the first line of the file
@@ -93,3 +99,24 @@ var csvConverter = function (data) {
   getValues(data);
   return result;
 };
+
+// Part 2
+var handleUpload = function (req, res) {
+  var buffer = Buffer.alloc(0);
+  req.on('data', (chunk) => {
+    buffer = Buffer.concat([buffer, chunk]);
+  }).on('end', () => {
+    // binary -> string to get the data back
+    var data = buffer.toString('utf8');
+    // keeping only the json part
+    data = data.split('application/json')[1];
+    data = data.split('------')[0].trim();
+    // for converter we need JSON
+    var toJson = JSON.parse(data);
+    var newFormat = csvConverter(toJson);
+
+    var updatedPage = template(data, newFormat);
+    res.send(updatedPage);
+  });
+
+}
