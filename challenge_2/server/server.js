@@ -2,9 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 var newFormat = {};
-// make sure it's safe to send text, escaped for html
-
-// app.use(express.urlencoded()); // for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded()); // for Part 1 for parsing application/x-www-form-urlencoded
 
 // serving an index file from the server using .static,
 // filepath is relative to the server.js
@@ -59,6 +57,7 @@ var template = function (oldFormat, newFormat) {
 <label for="result"></label>
 <textarea id="result" name="result" rows="10" cols="80">${newFormat}</textarea>
 </p>
+<button type="submit" onclick="window.open('file.csv')">Download!</button>
 </div>
 </div>
 <script src="app.js"></script>
@@ -67,7 +66,6 @@ var template = function (oldFormat, newFormat) {
 `};
 
 // Functions to modify the JSON - Part 1
-
 var handleText = function (req, res) {
   var toJson = JSON.parse(req.body.json);
   var jsonToString = JSON.stringify(toJson, null, 4);
@@ -75,7 +73,6 @@ var handleText = function (req, res) {
   var data = template(jsonToString, newFormat);
   res.send(data);
 }
-
 
 var getFirstLine = function (data) {
   var firstLine = '';

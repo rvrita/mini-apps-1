@@ -6,7 +6,6 @@ body {
   padding: 0;
 }
 
-
 #main-container {
   width: 700px;
   margin: 0 auto;
@@ -37,10 +36,7 @@ textarea {
 input#json-file {
   cursor: pointer;
   padding: 10px 12px;
-  /* background-color: #fff; */
-  /* border: 1px solid #3d3a3a; */
   border-radius: 5px;
-  /* font-size: 18px; */
 }
 
 
