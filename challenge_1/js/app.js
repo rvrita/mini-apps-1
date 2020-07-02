@@ -1,5 +1,3 @@
-// Model
-
 // attach the event handler to the board so when the table resets
 // the event handler will still be there
 var board = document.getElementById('board');
@@ -17,12 +15,10 @@ var wins = {
 var scores = document.getElementById('scores');
 
 // elements to reset the board
-var resetButton = document.getElementsByClassName('reset');
+var resetButtons = document.getElementsByClassName('reset');
 
-
-// View
-
-var template = function(moves) {
+// board HTML
+var template = function (moves) {
   return `
   <tr>
     <td data-index="0">${moves[0]}</td>
@@ -42,11 +38,11 @@ var template = function(moves) {
 `
 };
 
-var drawBoard = function(moves) {
+var drawBoard = function (moves) {
   table.innerHTML = template(moves);
 }
 
-var setActivePlayer = function(player) {
+var setActivePlayer = function (player) {
   if (player === 'x') {
     p1.style.textDecoration = "underline";
     p2.style.textDecoration = "none";
@@ -58,7 +54,7 @@ var setActivePlayer = function(player) {
   }
 }
 
-var setEndMessage = function(state) {
+var setEndMessage = function (state) {
   var winnerMessage = document.getElementById('winner');
   var tieMessage = document.getElementById('tie');
   if (state === 'win') {
@@ -71,13 +67,9 @@ var setEndMessage = function(state) {
   }
 }
 
-var setWins = function(wins) {
-  scores.innerHTML = '';
+var setWins = function (wins) {
   scores.innerHTML = `${wins['p1']} | ${wins['p2']}`;
 }
-
-
-// Controller
 
 // clickHandlers
 var resetBoard = function () {
@@ -107,18 +99,17 @@ var handlePlayerClick = function (event) {
     // check if any winner
     checkWinner(moves);
   }
-
 }
 
 var checkWinner = function (moves) {
   if ((moves[0] !== '' && moves[0] === moves[1] && moves[0] === moves[2]) ||
-  (moves[3] !== '' && moves[3] === moves[4] && moves[3] === moves[5]) ||
-  (moves[6] !== '' && moves[6] === moves[7] && moves[6] === moves[8]) ||
-  (moves[0] !== '' && moves[0] === moves[3] && moves[0] === moves[6]) ||
-  (moves[1] !== '' && moves[1] === moves[4] && moves[1] === moves[7]) ||
-  (moves[2] !== '' && moves[2] === moves[5] && moves[2] === moves[8]) ||
-  (moves[0] !== '' && moves[0] === moves[4] && moves[0] === moves[8]) ||
-  (moves[2] !== '' && moves[2] === moves[4] && moves[2] === moves[6])) {
+    (moves[3] !== '' && moves[3] === moves[4] && moves[3] === moves[5]) ||
+    (moves[6] !== '' && moves[6] === moves[7] && moves[6] === moves[8]) ||
+    (moves[0] !== '' && moves[0] === moves[3] && moves[0] === moves[6]) ||
+    (moves[1] !== '' && moves[1] === moves[4] && moves[1] === moves[7]) ||
+    (moves[2] !== '' && moves[2] === moves[5] && moves[2] === moves[8]) ||
+    (moves[0] !== '' && moves[0] === moves[4] && moves[0] === moves[8]) ||
+    (moves[2] !== '' && moves[2] === moves[4] && moves[2] === moves[6])) {
     setEndMessage('win');
     if (currentPlayer === 'O') {
       wins['p1']++;
@@ -130,8 +121,9 @@ var checkWinner = function (moves) {
   }
 }
 
-for (var i = 0; i < resetButton.length; i++) {
-  resetButton[i].addEventListener('click', resetBoard);
+// event listeners
+for (var i = 0; i < resetButtons.length; i++) {
+  resetButtons[i].addEventListener('click', resetBoard);
 }
 board.addEventListener('click', handlePlayerClick);
 
@@ -139,4 +131,3 @@ board.addEventListener('click', handlePlayerClick);
 drawBoard(moves);
 setActivePlayer('x');
 setWins(wins);
-

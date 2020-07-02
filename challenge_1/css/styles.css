@@ -6,10 +6,10 @@ body {
 }
 
 #main-container {
-  width: 700px;
+  width: 800px;
   margin: 0 auto;
   background-color: rgb(199, 217, 240);
-  padding: 50px 0 200px;
+  padding: 60px 0 200px;
 }
 
 h1 {
@@ -76,8 +76,8 @@ button {
   position: absolute;
   text-align: center;
   top: 25%;
-  left: 38%;
-  background-color: lightsalmon;
+  left: 42%;
+  background-color: rgb(255, 155, 155);
   border: 2px solid #000;
   border-radius: 5px;
 }
