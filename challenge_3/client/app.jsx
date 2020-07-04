@@ -17,6 +17,8 @@ class Form1 extends React.Component {
 
   render() {
     return (
+      <div>
+        <p className="text">Please provide name, email and password:</p>
       <form onSubmit={(e) => this.props.switchForm(this.props.formValue)}>
         <label>
           Name: <input type="text" value={this.state.valueName} name="valueName" onChange={this.handleInputChange} />
@@ -29,6 +31,7 @@ class Form1 extends React.Component {
         </label>
         <input type="submit" value="Submit" />
       </form>
+      </div>
     )
   }
 
@@ -56,6 +59,8 @@ class Form2 extends React.Component {
 
   render() {
     return (
+      <div>
+        <p className="text">Please provide address and phone number:</p>
       <form onSubmit={(e) => this.props.switchForm(this.props.formValue)}>
         <label>
           Address: <input type="text" value={this.state.valueLine1} name="valueLine1" onChange={this.handleInputChange} />
@@ -77,6 +82,7 @@ class Form2 extends React.Component {
         </label>
         <input type="submit" value="Submit" />
       </form>
+      </div>
     )
   }
 
@@ -102,6 +108,8 @@ class Form3 extends React.Component {
 
   render() {
     return (
+      <div>
+        <p className="text">Please provide credit card information:</p>
       <form onSubmit={(e) => this.props.switchForm(this.props.formValue)}>
         <label>
           Credit Card number: <input type="text" value={this.state.valueCreditCard} name="valueCreditCard" onChange={this.handleInputChange} />
@@ -115,8 +123,9 @@ class Form3 extends React.Component {
         <label>
           Billing zip code: <input type="text" value={this.state.valueBillingZip} name="valueBillingZip" onChange={this.handleInputChange} />
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit"/>
       </form>
+      </div>
     )
   }
 
@@ -130,7 +139,8 @@ class CheckoutPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>Welcome to checkout app! Please click on the button.</h1>
+        <h1>Welcome to checkout app!</h1>
+        <p className="main-page">Please click on the button.</p>
         <button onClick={(e) => this.props.switchForm(this.props.formValue)}>
           Checkout
         </button>

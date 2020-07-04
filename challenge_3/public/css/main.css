@@ -1,0 +1,68 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  background-color: #996378;
+  font-size: 26px;
+}
+
+#app {
+  width: 800px;
+  margin: 100px auto;
+}
+
+h1 {
+  margin-top: 200px;
+  font-size: 46px;
+}
+
+.main-page {
+  font-size: 30px;
+}
+
+button,
+input[type='submit'] {
+  font-family: inherit;
+  cursor: pointer;
+  background-color: #fff;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  outline-color: #3d3a3a;
+}
+
+input[type='submit'] {
+  width: 100px;
+  margin: 40px auto;
+}
+
+form {
+  width: 400px;
+  margin: 30px auto;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin: 0 0 14px;
+  font-size: 22px;
+}
+
+input {
+  border-radius: 5px;
+  padding: 12px 0;
+  display:block;
+  width:100%;
+}
+
+input[type=text]:focus {
+  outline: none;
+  border: 2px solid #000;
+}
+
+.text {
+  margin-bottom: 40px;
+}
