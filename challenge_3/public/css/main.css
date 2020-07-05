@@ -67,6 +67,13 @@ input[type=text]:focus {
   margin-bottom: 40px;
 }
 
-/* input:invalid:required {
-  border: 2px dashed red;
-} */
+.confirmation {
+  width: 500px;
+  margin: 40px auto 50px;
+  border: 1px solid #fff;
+  font-size: 20px;
+}
+
+.confirmation td {
+  width: 50%;
+}

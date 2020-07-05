@@ -14,35 +14,48 @@ app.post('/checkout', (req, res) => {
   console.log('req.body:', req.body);
   var data = req.body;
   // user clicks on checkout -> want to make a new entry in the db
-  if (data.formValue === 1) {
-    var queryString = 'INSERT INTO userdata () VALUES ()';
-  } else if (data.formValue === 2) {
-    var hashedPassword = hashPassword(data.password);
-    var queryString = 'UPDATE userdata SET name=?, email=?, password=? WHERE userdata.id=?';
-    var queryArgs = [data.name, data.email, hashedPassword, data.id];
-  } else if (data.formValue === 3) {
-    var address = data.line1 + ' ' + data.line2;
-    var queryString = 'UPDATE userdata SET address=?, city=?, state=?, zip=?, phone=? WHERE userdata.id=?';
-    var queryArgs = [address, data.city, data.state, data.zip, data.phone, data.id];
-  } else {
-    var queryString = 'UPDATE userdata SET creditcard=?, expirationdate=?, cvv=?, cczip=? WHERE userdata.id=?';
-    var queryArgs = [data.ccard, data.expdate, data.cvv, data.bzip, data.id];
-  }
-
-  connection.query(queryString, queryArgs, function (err, dataFromUpdate) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(dataFromUpdate);
-      if (data.formValue === 1) {
-        res.json({id: dataFromUpdate.insertId});
-        res.end();
-      } else {
-        res.json({id: data.id})
-      }
+    if (data.formValue === 1) {
+      var queryString = 'INSERT INTO userdata () VALUES ()';
+    } else if (data.formValue === 2) {
+      var hashedPassword = hashPassword(data.password);
+      var queryString = 'UPDATE userdata SET name=?, email=?, password=? WHERE userdata.id=?';
+      var queryArgs = [data.name, data.email, hashedPassword, data.id];
+    } else if (data.formValue === 3) {
+      var address = data.line1 + ' ' + data.line2;
+      var queryString = 'UPDATE userdata SET address=?, city=?, state=?, zip=?, phone=? WHERE userdata.id=?';
+      var queryArgs = [address, data.city, data.state, data.zip, data.phone, data.id];
+    } else if (data.formValue === 4) {
+      var queryString = 'UPDATE userdata SET creditcard=?, expirationdate=?, cvv=?, cczip=? WHERE userdata.id=?';
+      var queryArgs = [data.ccard, data.expdate, data.cvv, data.bzip, data.id];
     }
-  });
 
+    connection.query(queryString, queryArgs, function (err, dataFromUpdate) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(dataFromUpdate);
+        if (data.formValue === 1) {
+          res.json({ id: dataFromUpdate.insertId, formValue: data.formValue });
+          // res.end();
+        } else if (data.formValue === 4) {
+
+          var queryString = 'SELECT * FROM userdata WHERE userdata.id=?';
+          var queryArgs = [data.id];
+          connection.query(queryString, queryArgs, function (err, dataFromDb) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(dataFromDb);
+              dataFromDb[0].formValue = data.formValue;
+              console.log(dataFromDb);
+              res.json(dataFromDb);
+            }
+          });
+        } else {
+          res.json({ id: data.id, formValue: data.formValue })
+        }
+      }
+    });
 });
 
 
