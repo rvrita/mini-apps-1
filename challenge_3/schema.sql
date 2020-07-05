@@ -5,18 +5,18 @@ USE formdata;
 DROP TABLE IF EXISTS userdata;
 CREATE TABLE userdata(
   id INTEGER NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
-  address VARCHAR(255) NOT NULL,
-  city VARCHAR(255) NOT NULL,
-  state VARCHAR(255) NOT NULL,
-  zip INTEGER NOT NULL,
-  phone VARCHAR(255) NOT NULL,
-  creditcard INTEGER NOT NULL,
-  expirationdate DATE NOT NULL,
-  cvv INTEGER NOT NULL,
-  cczip INTEGER NOT NULL,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  password VARCHAR(255),
+  address VARCHAR(255),
+  city VARCHAR(255),
+  state VARCHAR(255),
+  zip INTEGER,
+  phone VARCHAR(255),
+  creditcard INTEGER,
+  expirationdate DATE,
+  cvv INTEGER,
+  cczip INTEGER,
   PRIMARY KEY (id)
 );
 

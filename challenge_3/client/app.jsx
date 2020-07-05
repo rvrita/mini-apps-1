@@ -1,3 +1,8 @@
+//saving the userId in a global obj
+var user = {
+  id: 9999
+};
+
 class Form1 extends React.Component {
   constructor(props) {
     super(props);
@@ -29,15 +34,15 @@ class Form1 extends React.Component {
           })
         }} >
           <label>
-            Name: <input type="text" value={this.state.valueName} name="valueName" onChange={this.handleInputChange} />
+            Name: <input type="text" value={this.state.valueName} name="valueName" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            Email: <input type="text" value={this.state.valueEmail} name="valueEmail" onChange={this.handleInputChange} />
+            Email: <input type="email" value={this.state.valueEmail} name="valueEmail" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            Password: <input type="text" value={this.state.valuePassword} name="valuePassword" onChange={this.handleInputChange} />
+            Password: <input type="password" value={this.state.valuePassword} name="valuePassword" onChange={this.handleInputChange} required/>
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Next" />
         </form>
       </div>
     )
@@ -82,24 +87,24 @@ class Form2 extends React.Component {
           })
         }}>
           <label>
-            Address: <input type="text" value={this.state.valueLine1} name="valueLine1" onChange={this.handleInputChange} />
+            Address: <input type="text" value={this.state.valueLine1} name="valueLine1" onChange={this.handleInputChange} required/>
           </label>
           <label>
             <input type="text" value={this.state.valueLine2} name="valueLine2" onChange={this.handleInputChange} />
           </label>
           <label>
-            City: <input type="text" value={this.state.valueCity} name="valueCity" onChange={this.handleInputChange} />
+            City: <input type="text" value={this.state.valueCity} name="valueCity" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            State: <input type="text" value={this.state.valueState} name="valueState" onChange={this.handleInputChange} />
+            State: <input type="text" value={this.state.valueState} name="valueState" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            Zip code: <input type="text" value={this.state.valueZip} name="valueZip" onChange={this.handleInputChange} />
+            Zip code: <input type="number" value={this.state.valueZip} name="valueZip" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            Phone number: <input type="text" value={this.state.valuePhone} name="valuePhone" onChange={this.handleInputChange} />
+            Phone number: <input type="number" value={this.state.valuePhone} name="valuePhone" onChange={this.handleInputChange} required/>
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Next" />
         </form>
       </div>
     )
@@ -138,16 +143,16 @@ class Form3 extends React.Component {
           formValue: this.props.formValue
         })}>
           <label>
-            Credit Card number: <input type="text" value={this.state.valueCreditCard} name="valueCreditCard" onChange={this.handleInputChange} />
+            Credit Card number: <input type="number" value={this.state.valueCreditCard} name="valueCreditCard" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            Expiration Date: <input type="text" value={this.state.valueExpDate} name="valueExpDate" onChange={this.handleInputChange} />
+            Expiration Date (yyyy-mm-dd): <input type="text" value={this.state.valueExpDate} name="valueExpDate" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            CVV: <input type="text" value={this.state.valueCVV} name="valueCVV" onChange={this.handleInputChange} />
+            CVV: <input type="number" value={this.state.valueCVV} name="valueCVV" onChange={this.handleInputChange} required/>
           </label>
           <label>
-            Billing zip code: <input type="text" value={this.state.valueBillingZip} name="valueBillingZip" onChange={this.handleInputChange} />
+            Billing zip code: <input type="number" value={this.state.valueBillingZip} name="valueBillingZip" onChange={this.handleInputChange} required/>
           </label>
           <input type="submit" value="Purchase" />
         </form>
@@ -175,7 +180,6 @@ class CheckoutPage extends React.Component {
 
 };
 
-
 class CheckoutApp extends React.Component {
   constructor(props) {
     super(props);
@@ -186,17 +190,23 @@ class CheckoutApp extends React.Component {
   }
 
   switchForm(data) {
+    if (user.id !== 9999) {
+      data.id = user.id;
+    }
     fetch('/checkout', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data) })
-      .then(data => console.log(data));
-    // console.log(data);
+        body: JSON.stringify(data) 
+      })
+      .then(response => response.json())
+      .then(data => { console.log('resp', data); return data; })
+      .then(data => { user.id = data.id; console.log('user', user.id) });
+
     this.setState({
       formValue: data.formValue
-    })
+    });
   }
 
   render() {
