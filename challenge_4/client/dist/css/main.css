@@ -1,3 +1,32 @@
-/* body {
-  background-color: gray;
-} */
+body {
+  font-family: 'Raleway', sans-serif;
+  padding: 0;
+  margin: 0;
+  /* background-color: #fff0d0; */
+  background-color: silver;
+}
+
+#app {
+  padding: 30px 0;
+  width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+  border-radius: 32px;
+  background-color: white;
+}
+
+.board {
+  margin: 20px auto 0;
+  border-spacing: 8px;
+  background-color: cornflowerblue;
+  border-radius: 10px;
+}
+
+.player {
+  margin-top: 30px;
+}
