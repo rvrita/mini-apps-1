@@ -4,8 +4,14 @@ import ReactDOM from 'react-dom';
 
 class Square extends React.Component {
   render() {
+    var classes = 'square';
+    if (this.props.value === 'red') {
+      classes += ' red';
+    } else if (this.props.value === 'yellow') {
+      classes += ' yellow'
+    }
     return (
-      <td className="square">{this.props.value}</td>
+      <td className={classes}>{this.props.value}</td>
     )
   }
 }
@@ -15,6 +21,7 @@ class Board extends React.Component {
     return (
       <table className="board">
         <tbody>
+          {/* board is a matrix, so render each row first then render each square inside the rows  */}
           {this.props.boardState.map(row => {
             return (
               <tr>
