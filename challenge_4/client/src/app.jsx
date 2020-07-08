@@ -21,7 +21,6 @@ class Square extends React.Component {
 
 class Board extends React.Component {
   render() {
-    console.log('inside board render');
     return (
       <table className="board">
         <tbody>
@@ -41,7 +40,6 @@ class Board extends React.Component {
 
 class Scoreboard extends React.Component {
   render() {
-    console.log('inside scoreboard render', this.props.isWinner);
     if (!this.props.isWinner) {
       return (
         <div className="player">
@@ -55,7 +53,6 @@ class Scoreboard extends React.Component {
         </div>
       )
     }
-
   }
 }
 
@@ -74,7 +71,8 @@ class Game extends React.Component {
       isRedsTurn: true,
       isWinner: false
     }
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this),
+    this.restart = this.restart.bind(this)
   }
 
   detectWinner(board) {
@@ -119,11 +117,23 @@ class Game extends React.Component {
       })
     }
   }
-  
+}
+
+restart(e) {
+  e.preventDefault();
+  this.setState({
+    boardState: [
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null]
+    ]
+  })
 }
 
 render() {
-  console.log('inside game render', this.state.isWinner);
   return (
     <div>
       <div>
@@ -135,6 +145,9 @@ render() {
       </div>
       <div>
         <Scoreboard isRedsTurn={this.state.isRedsTurn} isWinner={this.state.isWinner} />
+      </div>
+      <div>
+        <button onClick={this.restart}>Restart</button>
       </div>
     </div>
   )
