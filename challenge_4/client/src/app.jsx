@@ -11,15 +11,17 @@ class Square extends React.Component {
       classes += ' yellow'
     }
     return (
-    <td className={classes} onClick={(e) => { 
-      e.preventDefault();
-      this.props.handleClick(this.props.colIndex) }}></td>
+      <td className={classes} onClick={(e) => {
+        e.preventDefault();
+        this.props.handleClick(this.props.colIndex)
+      }}></td>
     )
   }
 }
 
 class Board extends React.Component {
   render() {
+    console.log('inside board render');
     return (
       <table className="board">
         <tbody>
@@ -27,7 +29,7 @@ class Board extends React.Component {
           {this.props.boardState.map((row, indexRow) => {
             return (
               <tr key={indexRow}>
-                {row.map((square, indexCol) => <Square handleClick={this.props.handleClick} colIndex={indexCol} value={square} key={indexRow*7+indexCol}/>)}
+                {row.map((square, indexCol) => <Square handleClick={this.props.handleClick} colIndex={indexCol} value={square} key={indexRow * 7 + indexCol} />)}
               </tr>
             )
           })}
@@ -39,11 +41,21 @@ class Board extends React.Component {
 
 class Scoreboard extends React.Component {
   render() {
-    return (
-      <div className="player">
-        Next Player: {this.props.isRedsTurn ? 'Red' : 'Yellow'}
-      </div>
-    )
+    console.log('inside scoreboard render', this.props.isWinner);
+    if (!this.props.isWinner) {
+      return (
+        <div className="player">
+          It's {this.props.isRedsTurn ? 'Red' : 'Yellow'}'s turn.
+        </div>
+      )
+    } else {
+      return (
+        <div className="winner">
+         {this.props.isRedsTurn ? 'Red' : 'Yellow'}, you won!
+        </div>
+      )
+    }
+
   }
 }
 
@@ -59,13 +71,33 @@ class Game extends React.Component {
         [null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null]
       ],
-      isRedsTurn: false
+      isRedsTurn: true,
+      isWinner: false
     }
     this.handleClick = this.handleClick.bind(this);
   }
 
+  detectWinner(board) {
+    // checking all rows boardState[i][j] i=>row, j=>col
+    for (var i = 0; i < 6; i++) {
+      for (var j = 0; j < 4; j++) {
+        if ((board[i][j]) && (board[i][j] === board[i][j + 1]) && (board[i][j] === board[i][j + 2]) && (board[i][j] === board[i][j + 3])) {
+          return true;
+        }
+      }
+    }
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 7; j++) {
+        if ((board[i][j]) && (board[i][j] === board[i + 1][j]) && (board[i][j] === board[i + 2][j]) && (board[i][j] === board[i + 3][j])) {
+          return true;
+        }
+      }
+    }
+  }
+
   handleClick(colIndex) {
     var newBoardState = this.state.boardState.slice();
+    if (!this.state.isWinner) {
     for (var i = 5; i >= 0; i--) {
       if (newBoardState[i][colIndex] === null) {
         if (this.state.isRedsTurn) {
@@ -76,30 +108,37 @@ class Game extends React.Component {
         break;
       }
     }
-    // set that null to colored in that column that was closest to bottom
-    console.log(colIndex);
-    this.setState({
-      boardState: newBoardState,
-      isRedsTurn: !this.state.isRedsTurn
-    })
+    if (this.detectWinner(newBoardState)) {
+      this.setState({
+        isWinner: true
+      })
+    } else {
+      this.setState({
+        boardState: newBoardState,
+        isRedsTurn: !this.state.isRedsTurn
+      })
+    }
   }
+  
+}
 
-  render() {
-    return (
+render() {
+  console.log('inside game render', this.state.isWinner);
+  return (
+    <div>
       <div>
-        <div>
-          <h1>Welcome to Connect Four</h1>
-          <p className="rules">Your goal is to make a straight line of four of your own pieces - vertically, horizontally or diagonal.<br/>Click on a column to drop your piece:</p>
-        </div>
-        <div>
-          <Board boardState={this.state.boardState} handleClick={this.handleClick}/>
-        </div>
-        <div>
-          <Scoreboard isRedsTurn={this.state.isRedsTurn} />
-        </div>
+        <h1>Welcome to Connect Four</h1>
+        <p className="rules">Your goal is to make a straight line of four of your own pieces - vertically, horizontally or diagonal.<br />Click on a column to drop your piece:</p>
       </div>
-    )
-  }
+      <div>
+        <Board boardState={this.state.boardState} handleClick={this.handleClick}/>
+      </div>
+      <div>
+        <Scoreboard isRedsTurn={this.state.isRedsTurn} isWinner={this.state.isWinner} />
+      </div>
+    </div>
+  )
+}
 }
 
 ReactDOM.render(<Game />, document.getElementById('app'));
