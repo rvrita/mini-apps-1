@@ -28,7 +28,7 @@ class Board extends React.Component {
           {this.props.boardState.map((row, indexRow) => {
             return (
               <tr key={indexRow}>
-                {row.map((square, indexCol) => <Square handleClick={this.props.handleClick} colIndex={indexCol} value={square} key={indexRow * 7 + indexCol} />)}
+                {row.map((square, indexCol) => <Square handleClick={this.props.handleClick} colIndex={indexCol} value={square} key={indexRow * 7 + indexCol}/>)}
               </tr>
             )
           })}
@@ -40,16 +40,22 @@ class Board extends React.Component {
 
 class Scoreboard extends React.Component {
   render() {
-    if (!this.props.isWinner) {
+    if (this.props.isWinner) {
       return (
-        <div className="player">
-          It's {this.props.isRedsTurn ? 'Red' : 'Yellow'}'s turn.
+        <div className="winner">
+         {this.props.isRedsTurn ? 'Red' : 'Yellow'}, you won!
+        </div>
+      )
+    } else if (this.props.isTie) {
+      return (
+        <div className="tie">
+          It's a tie!
         </div>
       )
     } else {
       return (
-        <div className="winner">
-         {this.props.isRedsTurn ? 'Red' : 'Yellow'}, you won!
+        <div className="player">
+          It's {this.props.isRedsTurn ? 'Red' : 'Yellow'}'s turn.
         </div>
       )
     }
@@ -69,14 +75,28 @@ class Game extends React.Component {
         [null, null, null, null, null, null, null]
       ],
       isRedsTurn: true,
-      isWinner: false
+      isWinner: false,
+      isTie: false
     }
     this.handleClick = this.handleClick.bind(this),
     this.restart = this.restart.bind(this)
   }
 
+  detectTie(board) {
+    for (var i = 0; i < 6; i++) {
+      for (var j = 0; j < 4; j++) {
+        if (board[i][j] === null) {
+          return false;
+        } else if (this.state.isWinner) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   detectWinner(board) {
-    // checking all rows boardState[i][j] i=>row, j=>col
+    // checking all squares boardState[i][j] i=>row, j=>col
     for (var i = 0; i < 6; i++) {
       for (var j = 0; j < 4; j++) {
         if ((board[i][j]) && (board[i][j] === board[i][j + 1]) && (board[i][j] === board[i][j + 2]) && (board[i][j] === board[i][j + 3])) {
@@ -87,6 +107,20 @@ class Game extends React.Component {
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 7; j++) {
         if ((board[i][j]) && (board[i][j] === board[i + 1][j]) && (board[i][j] === board[i + 2][j]) && (board[i][j] === board[i + 3][j])) {
+          return true;
+        }
+      }
+    }
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 4; j++) {
+        if ((board[i][j]) && (board[i][j] === board[i+1][j+1]) && (board[i][j] === board[i+2][j+2]) && (board[i][j] === board[i+3][j+3])) {
+          return true;
+        }
+      }
+    }
+    for (var i = 3; i < 6; i++) {
+      for (var j = 0; j < 4; j++) {
+        if ((board[i][j]) && (board[i][j] === board[i-1][j+1]) && (board[i][j] === board[i-2][j+2]) && (board[i][j] === board[i-3][j+3])) {
           return true;
         }
       }
@@ -110,6 +144,10 @@ class Game extends React.Component {
       this.setState({
         isWinner: true
       })
+    } else if (this.detectTie(newBoardState)) {
+      this.setState({
+        isTie: true
+      })
     } else {
       this.setState({
         boardState: newBoardState,
@@ -129,7 +167,10 @@ restart(e) {
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null]
-    ]
+    ],
+    isRedsTurn: true,
+    isWinner: false,
+    isTie: false
   })
 }
 
@@ -144,7 +185,7 @@ render() {
         <Board boardState={this.state.boardState} handleClick={this.handleClick}/>
       </div>
       <div>
-        <Scoreboard isRedsTurn={this.state.isRedsTurn} isWinner={this.state.isWinner} />
+        <Scoreboard isRedsTurn={this.state.isRedsTurn} isWinner={this.state.isWinner} isTie={this.state.isTie}/>
       </div>
       <div>
         <button onClick={this.restart}>Restart</button>
