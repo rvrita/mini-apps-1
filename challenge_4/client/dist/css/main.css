@@ -3,7 +3,8 @@ body {
   padding: 0;
   margin: 0;
   /* background-color: #fff0d0; */
-  background-color: silver;
+  background-color: peru;
+  color: white;
 }
 
 #app {
@@ -26,6 +27,7 @@ body {
   border-spacing: 8px;
   background-color: cornflowerblue;
   border-radius: 10px;
+  border: 2px solid white;
 }
 
 .player {
@@ -33,9 +35,14 @@ body {
 }
 
 .red {
-  background-color: rgb(254, 90, 90);
+  background-color: rgb(225, 95, 72);
 }
 
 .yellow {
-  background-color: rgb(255, 255, 73);
+  background-color: rgb(242, 227, 90);
+}
+
+.rules {
+  width: 500px;
+  margin: 40px auto 30px;
 }
