@@ -1,66 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
-class Square extends React.Component {
-  render() {
-    var classes = 'square';
-    if (this.props.value === 'red') {
-      classes += ' red';
-    } else if (this.props.value === 'yellow') {
-      classes += ' yellow'
-    }
-    return (
-      <td className={classes} onClick={(e) => {
-        e.preventDefault();
-        this.props.handleClick(this.props.colIndex)
-      }}></td>
-    )
-  }
-}
-
-class Board extends React.Component {
-  render() {
-    return (
-      <table className="board">
-        <tbody>
-          {/* board is a matrix, so render each row first then render each square inside the rows  */}
-          {this.props.boardState.map((row, indexRow) => {
-            return (
-              <tr key={indexRow}>
-                {row.map((square, indexCol) => <Square handleClick={this.props.handleClick} colIndex={indexCol} value={square} key={indexRow * 7 + indexCol}/>)}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    )
-  }
-}
-
-class Scoreboard extends React.Component {
-  render() {
-    if (this.props.isWinner) {
-      return (
-        <div className="winner">
-         {this.props.isRedsTurn ? 'Red' : 'Yellow'}, you won!
-        </div>
-      )
-    } else if (this.props.isTie) {
-      return (
-        <div className="tie">
-          It's a tie!
-        </div>
-      )
-    } else {
-      return (
-        <div className="player">
-          It's {this.props.isRedsTurn ? 'Red' : 'Yellow'}'s turn.
-        </div>
-      )
-    }
-  }
-}
+import Scoreboard from './components/ScoreBoard.jsx';
+import Board from './components/Board.jsx';
 
 class Game extends React.Component {
   constructor(props) {
@@ -97,6 +38,7 @@ class Game extends React.Component {
 
   detectWinner(board) {
     // checking all squares boardState[i][j] i=>row, j=>col
+    // row check
     for (var i = 0; i < 6; i++) {
       for (var j = 0; j < 4; j++) {
         if ((board[i][j]) && (board[i][j] === board[i][j + 1]) && (board[i][j] === board[i][j + 2]) && (board[i][j] === board[i][j + 3])) {
@@ -104,6 +46,7 @@ class Game extends React.Component {
         }
       }
     }
+    // column check
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 7; j++) {
         if ((board[i][j]) && (board[i][j] === board[i + 1][j]) && (board[i][j] === board[i + 2][j]) && (board[i][j] === board[i + 3][j])) {
@@ -111,6 +54,7 @@ class Game extends React.Component {
         }
       }
     }
+    // diagonal down check
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 4; j++) {
         if ((board[i][j]) && (board[i][j] === board[i+1][j+1]) && (board[i][j] === board[i+2][j+2]) && (board[i][j] === board[i+3][j+3])) {
@@ -118,6 +62,7 @@ class Game extends React.Component {
         }
       }
     }
+    // diagonal up check
     for (var i = 3; i < 6; i++) {
       for (var j = 0; j < 4; j++) {
         if ((board[i][j]) && (board[i][j] === board[i-1][j+1]) && (board[i][j] === board[i-2][j+2]) && (board[i][j] === board[i-3][j+3])) {
