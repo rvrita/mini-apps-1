@@ -1,0 +1,55 @@
+body {
+  font-family: 'Muli', sans-serif;
+  color: #774a45;
+  font-size: 20px;
+  width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+table {
+  border: 5px solid #774a45;
+  border-radius: 10px;
+  border-spacing: 1px;
+  margin: 0 auto;
+}
+
+td {
+  width: 60px;
+  height: 60px;
+  border: none;
+  line-height: 60px;
+  font-size: 60px;
+}
+
+td.black {
+  border: 2px solid darkslategray;
+  border-radius: 50%;
+}
+
+td.white {
+  border: 2px solid tomato;
+  border-radius: 50%;
+}
+
+td.purple {
+  border: 2px solid blueviolet;
+  border-radius: 50%;
+}
+
+td.lightbgr {
+  /* background-color: #fde9ca; */
+  background-color: white;
+}
+
+td.darkbgr {
+  background-color: #774a45;
+}
+
+.playerinfo {
+  margin-top:20px;
+}
