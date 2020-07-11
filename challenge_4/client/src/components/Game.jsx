@@ -121,7 +121,7 @@ render() {
     <div>
       <div>
         <h1>Welcome to Connect Four</h1>
-        <p className="rules">Your goal is to make a straight line of four of your own pieces - vertically, horizontally or diagonal.<br />Click on a column to drop your piece:</p>
+        <p className="rules">Your goal is to make a straight line of four of your own pieces - vertically, horizontally or diagonally.<br />Click on a column to drop your piece:</p>
       </div>
       <div>
         <Board boardState={this.state.boardState} handleClick={this.handleClick}/>
